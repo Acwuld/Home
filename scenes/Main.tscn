@@ -32,6 +32,7 @@ texture = ExtResource("2_nl6hw")
 metadata/_edit_lock_ = true
 
 [node name="Squre" type="TileMap" parent="."]
+position = Vector2(960, 460)
 tile_set = SubResource("TileSet_jw0jt")
 format = 2
 
