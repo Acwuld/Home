@@ -3,7 +3,8 @@ extends Node2D
 @onready var main: TileMap = $Main
 @onready var held: TileMap = $Held
 @onready var next: TileMap = $Next
-const mainLayer:int=0
+const deadLayer:int=0
+const liveLayer:int=1
 
 
 var currentShape:Array
@@ -100,10 +101,10 @@ func moveShape(direction:Vector2i):
 		pass
 	
 	
-func canMove(direction:Vector2i):
+func canMove(_direction:Vector2i):
 	return true
 func isFree(pos):
-	return main.get_cell_source_id(mainLayer,pos)==-1
+	return main.get_cell_source_id(deadLayer,pos)==-1
 
 
 func showNext():
