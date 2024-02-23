@@ -7,7 +7,7 @@ extends Node2D
 var currentShape:Array
 var currentShapeIndex:int
 var currentType:int=0
-var initPos:Vector2i=Vector2i(0,-13)
+var initPos:Vector2i=Vector2i(5,-1)
 var currentPos
 
 var shapes:Array = [0,1,2,3,4,5,6,7,8,9,10]
@@ -94,5 +94,11 @@ func moveHorizontal(direction:bool):
 	else:
 		currentPos+=Vector2i.RIGHT
 	drawShape(main,currentShape,currentPos)
+	
+func checkDown():
+	
+	
+	
+	pass
 func _on_timer_timeout():
 	moveDownAuto() # Replace with function body.

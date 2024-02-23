@@ -23,7 +23,7 @@ texture = ExtResource("2_nl6hw")
 metadata/_edit_lock_ = true
 
 [node name="Main" type="TileMap" parent="."]
-position = Vector2(960, 460)
+position = Vector2(800, 140)
 tile_set = ExtResource("4_34eus")
 format = 2
 metadata/_edit_lock_ = true
