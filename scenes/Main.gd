@@ -36,6 +36,10 @@ func _process(_delta):
 			eraseShape(main,currentShape,currentPos)
 			rotateShape(true)
 			drawShape(main,currentShape,currentPos)
+		if Input.is_action_just_released("left"):
+			moveHorizontal(true)
+		if Input.is_action_just_released("right"):
+			moveHorizontal(false)
 		#if Input.is_action_just_released("hold"):
 			#eraseShape(currentShape,pos)
 			#
@@ -79,10 +83,16 @@ func showNext():
 	nextShapeIndex = shapesCopy[-1]
 	drawShape(next,Global.shapes[nextShapeIndex][0],Vector2i(0,0))
 	pass
-func moveDown():
+func moveDownAuto():
 	eraseShape(main,currentShape,currentPos)
 	currentPos+=Vector2i.DOWN
 	drawShape(main,currentShape,currentPos)
-
+func moveHorizontal(direction:bool):
+	eraseShape(main,currentShape,currentPos)
+	if direction:
+		currentPos+=Vector2i.LEFT
+	else:
+		currentPos+=Vector2i.RIGHT
+	drawShape(main,currentShape,currentPos)
 func _on_timer_timeout():
-	moveDown() # Replace with function body.
+	moveDownAuto() # Replace with function body.
