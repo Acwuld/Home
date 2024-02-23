@@ -3,13 +3,15 @@ extends Node2D
 @onready var main: TileMap = $Main
 @onready var held: TileMap = $Held
 @onready var next: TileMap = $Next
+const mainLayer:int=0
+
 
 var currentShape:Array
 var currentShapeIndex:int
 var currentType:int=0
+var directions:Array = [Vector2i.LEFT,Vector2i.RIGHT,Vector2.DOWN]
 var initPos:Vector2i=Vector2i(5,-1)
-var currentPos
-
+var currentPos:Vector2i
 var shapes:Array = [0,1,2,3,4,5,6,7,8,9,10]
 var shapesCopy:Array = [0,1,2,3,4,5,6,7,8,9,10]
 
@@ -25,10 +27,8 @@ var gameRunning:bool
 func _ready():
 	gameRunning=true
 	currentShapeIndex=pickShape()
-	
 	$Timer.start()
 func _process(_delta):
-	
 	showNext()
 	currentShape = Global.shapes[currentShapeIndex][currentType]
 	if gameRunning:
@@ -37,17 +37,28 @@ func _process(_delta):
 			rotateShape(true)
 			drawShape(main,currentShape,currentPos)
 		if Input.is_action_just_released("left"):
-			moveHorizontal(true)
+			moveShape(Vector2i.LEFT)
 		if Input.is_action_just_released("right"):
-			moveHorizontal(false)
+			moveShape(Vector2i.RIGHT)
 		#if Input.is_action_just_released("hold"):
 			#eraseShape(currentShape,pos)
 			#
 			#nextShapeIndex=(nextShapeIndex+1)%11
 			#currentShape = Global.shapes[nextShapeIndex][nextType]
 			#drawShape(currentShape,pos)
+
+func newGame():
+	
+	pass
+func pauseGame():
+	pass
+
+
+
+
+
+
 func pickShape():
-	currentPos = initPos
 	var shape=0
 	if not shapesCopy.is_empty():
 		shapesCopy.shuffle()
@@ -59,6 +70,9 @@ func pickShape():
 		shapesCopy.shuffle()
 		shape = shapesCopy.pop_back()
 	return shape
+
+func createShape():
+	currentPos = initPos
 func drawShape(tile,shape,pos):
 	for cell in shape:
 		if cell == Vector2i(1,1):
@@ -77,8 +91,21 @@ func rotateShape(direction:bool):
 		currentShape = Global.shapes[currentShapeIndex][currentType]
 func holdShape():
 	pass
-func moveShape():
-	pass
+func moveShape(direction:Vector2i):
+	if canMove(direction):
+		eraseShape(main,currentShape,currentPos)
+		currentPos+=direction
+		drawShape(main,currentShape,currentPos)
+	else:
+		pass
+	
+	
+func canMove(direction:Vector2i):
+	return true
+func isFree(pos):
+	return main.get_cell_source_id(mainLayer,pos)==-1
+
+
 func showNext():
 	nextShapeIndex = shapesCopy[-1]
 	drawShape(next,Global.shapes[nextShapeIndex][0],Vector2i(0,0))
@@ -87,13 +114,7 @@ func moveDownAuto():
 	eraseShape(main,currentShape,currentPos)
 	currentPos+=Vector2i.DOWN
 	drawShape(main,currentShape,currentPos)
-func moveHorizontal(direction:bool):
-	eraseShape(main,currentShape,currentPos)
-	if direction:
-		currentPos+=Vector2i.LEFT
-	else:
-		currentPos+=Vector2i.RIGHT
-	drawShape(main,currentShape,currentPos)
+
 	
 func checkDown():
 	

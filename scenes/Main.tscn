@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cyv5gxoocnsrb"]
+[gd_scene load_steps=8 format=3 uid="uid://cyv5gxoocnsrb"]
 
 [ext_resource type="Script" path="res://scenes/Main.gd" id="1_673he"]
 [ext_resource type="Texture2D" uid="uid://c58ywactpelx0" path="res://assets/bck.png" id="1_fy72x"]
-[ext_resource type="Texture2D" uid="uid://dctxkukr1c4sh" path="res://assets/bck2.png" id="2_nl6hw"]
 [ext_resource type="Script" path="res://scenes/Menu.gd" id="3_6blfw"]
 [ext_resource type="TileSet" uid="uid://dkqwqts8mgb6i" path="res://squre.tres" id="4_34eus"]
 [ext_resource type="Texture2D" uid="uid://dtn48ga51dp13" path="res://assets/quit1.png" id="4_jnxma"]
@@ -17,15 +16,13 @@ texture = ExtResource("1_fy72x")
 centered = false
 metadata/_edit_lock_ = true
 
-[node name="Bck2" type="Sprite2D" parent="."]
-position = Vector2(960, 460)
-texture = ExtResource("2_nl6hw")
-metadata/_edit_lock_ = true
-
 [node name="Main" type="TileMap" parent="."]
 position = Vector2(800, 140)
 tile_set = ExtResource("4_34eus")
 format = 2
+layer_0/name = "Dead"
+layer_1/name = "Live"
+layer_1/tile_data = PackedInt32Array()
 metadata/_edit_lock_ = true
 
 [node name="Held" type="TileMap" parent="."]
