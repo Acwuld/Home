@@ -1,23 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://cyv5gxoocnsrb"]
+[gd_scene load_steps=9 format=3 uid="uid://cyv5gxoocnsrb"]
 
 [ext_resource type="Script" path="res://scenes/Main.gd" id="1_673he"]
 [ext_resource type="Texture2D" uid="uid://c58ywactpelx0" path="res://assets/bck.png" id="1_fy72x"]
 [ext_resource type="Texture2D" uid="uid://dctxkukr1c4sh" path="res://assets/bck2.png" id="2_nl6hw"]
 [ext_resource type="Script" path="res://scenes/Menu.gd" id="3_6blfw"]
-[ext_resource type="Texture2D" uid="uid://dck35uinai3w" path="res://assets/squre.png" id="4_gofa6"]
+[ext_resource type="TileSet" uid="uid://dkqwqts8mgb6i" path="res://squre.tres" id="4_34eus"]
 [ext_resource type="Texture2D" uid="uid://dtn48ga51dp13" path="res://assets/quit1.png" id="4_jnxma"]
 [ext_resource type="Texture2D" uid="uid://dwmhkbq3yceeo" path="res://assets/quit2.png" id="5_f33hs"]
 [ext_resource type="Texture2D" uid="uid://b8k0oub3tcnkl" path="res://assets/quit3.png" id="8_uq3wo"]
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fyplf"]
-texture = ExtResource("4_gofa6")
-texture_region_size = Vector2i(32, 32)
-0:0/0 = 0
-1:0/0 = 0
-
-[sub_resource type="TileSet" id="TileSet_jw0jt"]
-tile_size = Vector2i(32, 32)
-sources/0 = SubResource("TileSetAtlasSource_fyplf")
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_673he")
@@ -32,10 +22,23 @@ position = Vector2(960, 460)
 texture = ExtResource("2_nl6hw")
 metadata/_edit_lock_ = true
 
-[node name="Squre" type="TileMap" parent="."]
+[node name="Main" type="TileMap" parent="."]
 position = Vector2(960, 460)
-tile_set = SubResource("TileSet_jw0jt")
+tile_set = ExtResource("4_34eus")
 format = 2
+metadata/_edit_lock_ = true
+
+[node name="Held" type="TileMap" parent="."]
+position = Vector2(1271, 461)
+tile_set = ExtResource("4_34eus")
+format = 2
+
+[node name="Next" type="TileMap" parent="."]
+position = Vector2(1247, 265)
+tile_set = ExtResource("4_34eus")
+format = 2
+
+[node name="Timer" type="Timer" parent="."]
 
 [node name="Menu" type="Control" parent="."]
 layout_mode = 3
@@ -53,4 +56,5 @@ texture_pressed = ExtResource("5_f33hs")
 texture_hover = ExtResource("8_uq3wo")
 metadata/_edit_lock_ = true
 
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="Menu/Quit" to="Menu" method="_on_quit_pressed"]
