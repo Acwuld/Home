@@ -26,17 +26,8 @@ layer_1/name = "Live"
 layer_1/tile_data = PackedInt32Array()
 metadata/_edit_lock_ = true
 
-[node name="Held" type="TileMap" parent="."]
-position = Vector2(1271, 461)
-tile_set = ExtResource("4_34eus")
-format = 2
-
-[node name="Next" type="TileMap" parent="."]
-position = Vector2(1247, 265)
-tile_set = ExtResource("4_34eus")
-format = 2
-
 [node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
 
 [node name="Menu" type="Control" parent="."]
 layout_mode = 3
