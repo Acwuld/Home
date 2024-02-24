@@ -34,7 +34,7 @@ func _process(_delta):
 		if Input.is_action_just_released("anticlockwise"):
 			eraseShape(currentShape,currentPos)
 			rotateShape(true)
-			drawShape(currentShape,currentPos)
+			drawShape(currentShape,currentPos,liveLayer)
 		if Input.is_action_just_released("left"):
 			moveShape(Vector2i.LEFT)
 		if Input.is_action_just_released("right"):
@@ -74,15 +74,15 @@ func createShape():
 	currentPos = initPos
 	currentShape = currentShapes[0]
 	nextShape = nextShapes[0]
-	drawShape(currentShape,currentPos)
-	drawShape(nextShape,nextPos)
+	drawShape(currentShape,currentPos,liveLayer)
+	drawShape(nextShape,nextPos,liveLayer)
 	
-func drawShape(shape,pos):
+func drawShape(shape,pos,layer):
 	for cell in shape:
 		if cell == Vector2i(1,1):
-			$Main.set_cell(liveLayer,cell+pos,0,Vector2i(1,0))
+			$Main.set_cell(layer,cell+pos,0,Vector2i(1,0))
 		else:
-			$Main.set_cell(liveLayer,cell+pos,0,Vector2i(0,0))
+			$Main.set_cell(layer,cell+pos,0,Vector2i(0,0))
 func eraseShape(shape,pos):
 	for cell in shape:
 		$Main.erase_cell(liveLayer,cell+pos)
@@ -100,7 +100,7 @@ func moveShape(direction:Vector2i):
 	if canMove(direction):
 		eraseShape(currentShape,currentPos)
 		currentPos+=direction
-		drawShape(currentShape,currentPos)
+		drawShape(currentShape,currentPos,liveLayer)
 	
 	
 	
@@ -128,14 +128,55 @@ func moveDownAuto():
 	if canMove(Vector2i.DOWN):
 		eraseShape(currentShape,currentPos)
 		currentPos+=Vector2i.DOWN
-		drawShape(currentShape,currentPos)
+		drawShape(currentShape,currentPos,liveLayer)
 	else:
+		landShape()
+		checkRows()
 		eraseShape(nextShape,nextPos)
 		currentShapes = nextShapes
 		nextShapes = pickShape()
 		createShape()
+func landShape():
+	for k in currentShape:
+		eraseShape(currentShape,currentPos)
+		drawShape(currentShape,currentPos,deadLayer)
+func checkRows():
+	var row : int = 19
+	while row > 0:
+		var count = 0
+		for k in range(10):
+			if not isFree(Vector2i(k + 1, row)):
+				count += 1
+		#if row is full then erase it
+		if count == 10:
+			shiftRows(row)
+	#		score += REWARD
+	#		$HUD.get_node("ScoreLabel").text = "SCORE: " + str(score)
+	#		speed += ACCEL
+		else:
+			row -= 1
 
-	
+func shiftRows(row):
+	var atlas
+	for k in range(row, 1, -1):
+		for tt in range(9):
+			atlas = $Main.get_cell_atlas_coords(deadLayer, Vector2i(tt + 1, k - 1))
+			if atlas == Vector2i(-1, -1):
+				$Main.erase_cell(deadLayer, Vector2i(tt + 1, k))
+			else:
+				$Main.set_cell(deadLayer, Vector2i(tt + 1, k), 0, atlas)
+
+func clearBoard():
+	for rowY in range(20):
+		for rowX in range(10):
+			$Main.erase_cell(deadLayer,Vector2i(rowX,rowY))
+
+func checkGameOver():
+	for cell in currentShape:
+		if not isFree(cell + currentPos):
+			landShape()
+			gameRunning = false
+
 func checkDown():
 	
 	
