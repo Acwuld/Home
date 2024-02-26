@@ -3,8 +3,7 @@ extends Node2D
 @onready var main: TileMap = $Main
 const deadLayer:int=0
 const liveLayer:int=1
-
-
+const schrodingerLayer:int=2
 var currentShapes:Array
 var currentShape:Array
 
@@ -25,11 +24,15 @@ var heldShapeIndex:int
 const heldType:int=0
 
 var gameRunning:bool
+
+
+var sco:int=0
 func _ready():
 	gameRunning=true
 	newGame()
 	$Timer.start()
 func _process(_delta):
+	$Score.text = String.num_int64(sco)
 	if gameRunning:
 		if Input.is_action_just_released("anticlockwise"):
 			eraseShape(currentShape,currentPos)
@@ -50,15 +53,10 @@ func newGame():
 	currentShapes = pickShape()
 	nextShapes = pickShape()
 	createShape()
+	sco=0
 	pass
 func pauseGame():
 	pass
-
-
-
-
-
-
 func pickShape():
 	var shape:Array
 	if not shapesCopy.is_empty():
@@ -83,6 +81,9 @@ func drawShape(shape,pos,layer):
 			$Main.set_cell(layer,cell+pos,0,Vector2i(1,0))
 		else:
 			$Main.set_cell(layer,cell+pos,0,Vector2i(0,0))
+func hideDraw(shape,pos,layer):
+	for cell in shape:
+			$Main.set_cell(layer,cell+pos,0,Vector2i(1,1))
 func eraseShape(shape,pos):
 	for cell in shape:
 		$Main.erase_cell(liveLayer,cell+pos)
@@ -139,7 +140,7 @@ func moveDownAuto():
 func landShape():
 	for k in currentShape:
 		eraseShape(currentShape,currentPos)
-		drawShape(currentShape,currentPos,deadLayer)
+		hideDraw(currentShape,currentPos,deadLayer)
 func checkRows():
 	var row : int = 19
 	while row > 0:
@@ -158,13 +159,15 @@ func checkRows():
 
 func shiftRows(row):
 	var atlas
+	sco+=1
 	for k in range(row, 1, -1):
 		for tt in range(9):
 			atlas = $Main.get_cell_atlas_coords(deadLayer, Vector2i(tt + 1, k - 1))
+#			atlas = Vector2i(0,0)
 			if atlas == Vector2i(-1, -1):
 				$Main.erase_cell(deadLayer, Vector2i(tt + 1, k))
 			else:
-				$Main.set_cell(deadLayer, Vector2i(tt + 1, k), 0, atlas)
+				$Main.set_cell(deadLayer, Vector2i(tt + 1, k), 0, Vector2i(0,0))
 
 func clearBoard():
 	for rowY in range(20):
@@ -178,9 +181,6 @@ func checkGameOver():
 			gameRunning = false
 
 func checkDown():
-	
-	
-	
 	pass
 func _on_timer_timeout():
 	moveDownAuto() # Replace with function body.
