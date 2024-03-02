@@ -50,6 +50,7 @@ func _process(_delta):
 			#drawShape(currentShape,pos)
 
 func newGame():
+	clearBoard()
 	currentShapes = pickShape()
 	nextShapes = pickShape()
 	createShape()
@@ -173,6 +174,9 @@ func clearBoard():
 	for rowY in range(20):
 		for rowX in range(10):
 			$Main.erase_cell(deadLayer,Vector2i(rowX,rowY))
+	for rowY in range(10):
+		for rowX in range(27):
+			$Main.erase_cell(liveLayer,Vector2i(rowX,rowY))
 
 func checkGameOver():
 	for cell in currentShape:
@@ -184,3 +188,7 @@ func checkDown():
 	pass
 func _on_timer_timeout():
 	moveDownAuto() # Replace with function body.
+
+
+func _on_new_pressed():
+	newGame() # Replace with function body.

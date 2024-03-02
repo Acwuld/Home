@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cyv5gxoocnsrb"]
+[gd_scene load_steps=10 format=3 uid="uid://cyv5gxoocnsrb"]
 
 [ext_resource type="Script" path="res://scenes/Main.gd" id="1_673he"]
 [ext_resource type="Texture2D" uid="uid://c58ywactpelx0" path="res://assets/bck.png" id="1_fy72x"]
@@ -6,7 +6,9 @@
 [ext_resource type="TileSet" uid="uid://dkqwqts8mgb6i" path="res://squre.tres" id="4_34eus"]
 [ext_resource type="Texture2D" uid="uid://dtn48ga51dp13" path="res://assets/quit1.png" id="4_jnxma"]
 [ext_resource type="Texture2D" uid="uid://dwmhkbq3yceeo" path="res://assets/quit2.png" id="5_f33hs"]
+[ext_resource type="Texture2D" uid="uid://es3dli5glb6s" path="res://assets/new.png" id="8_1kyky"]
 [ext_resource type="Texture2D" uid="uid://b8k0oub3tcnkl" path="res://assets/quit3.png" id="8_uq3wo"]
+[ext_resource type="Texture2D" uid="uid://dyrl2p5db07vl" path="res://assets/new2.png" id="9_cku47"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_673he")
@@ -53,5 +55,15 @@ texture_pressed = ExtResource("5_f33hs")
 texture_hover = ExtResource("8_uq3wo")
 metadata/_edit_lock_ = true
 
+[node name="New" type="TextureButton" parent="Menu"]
+layout_mode = 0
+offset_left = 421.0
+offset_top = 685.0
+offset_right = 564.0
+offset_bottom = 757.0
+texture_normal = ExtResource("8_1kyky")
+texture_pressed = ExtResource("9_cku47")
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="pressed" from="Menu/Quit" to="Menu" method="_on_quit_pressed"]
+[connection signal="pressed" from="Menu/New" to="." method="_on_new_pressed"]
